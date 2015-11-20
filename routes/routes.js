@@ -19,7 +19,7 @@ User.methods(['get','put','post', 'delete']);
 User.register(router, "/dish");
 
 
-//TODO: Handle a token to make sure user is logged in by using middleware 
+//TODO: Handle a token to make sure user is logged in when creating an order 
 //TODO: Upload images route for different types of data 
 //TODO: Draw initial flow and handle it 
 

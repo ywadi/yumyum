@@ -4,103 +4,120 @@ var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
 
 var chefSchema = new Schema({
-	firstNameAR: String, 
-	lastNameAR: String, 
-	firstNameEN: String,
-	lastNameEN: String, 
-	photoFileName: String, 
+	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
+	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
+	firstNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
+	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
+	photoFileName: {type:String}, 
 	address: {
-		email: String, 
-		country: String, 
-		city: String, 
-		area: String, 
-		street: String, 
-		building: String,
-		lat: Number,
-		lng: Number
-	},
-	phoneNumber: String,
-	rating: Number, 
-	points: Number, 
-	descEN: String, 
-	descAR: String,
+		email: {lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
+		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		building: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		lat: {type: Number},
+		lng: {type: Number}
+	}, 
+	phoneNumber: {required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
+	rating: {type: Number}, 
+	points: {type: Number}, 
+	descEN: {type: String}, 
+	descAR: {type: String},
 	auth: {
-		username: String, 
-		password: String,
-		blocked: String
+		username: {type: String, required: true, minlength: 3, maxlength:20}, 
+		password: {type: String, required: true, minlength: 3, maxlength:20}, //Should be MD5 
+		blocked: {type: Boolean, default: false}
+	},
+	creation:{
+		dateCreated: {typ: Date, required:true}, 
+		platform: {type: String, required:true}
 	}
 });
 
 
 var dishSchema = new Schema({
-	nameEN: String, 
-	nameAR: String, 
-	photoFileName: String, 
-	descAR: String,
-	descEN: String,
-	_chefID: Schema.Types.ObjectId,
-	unitEN: String, 
-	unitAR: String,
+	nameEN: { type: String, minlength:3, maxlength:50}, 
+	nameAR: { type: String, minlength:3, maxlength:50}, 
+	photoFileName: {type: String}, 
+	descAR: {type: String},
+	descEN: {type: String},
+	_chefID: {type: Schema.Types.ObjectId, required: true},
+	unitEN: {type: String}, 
+	unitAR: {type: String},
 	subcategory: [
 		{
-			name: String,
-			comment: String
+			nameEN: {type: String},
+			nameAR: {type: String},
+			comment: {type: String}
 		}
-	]
+	],
+	creation:{
+		dateCreated: {typ: Date, required:true}, 
+		platform: {type: String, required:true}
+	}
 });
 
 var userSchema = new Schema({
-	firstNameAR: String, 
-	lastNameAR: String, 
-	firstNameEN: String,
-	lastNameEN: String, 
-	photoFileName: String, 
+	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
+	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
+	firstNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
+	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
+	photoFileName: {type:String}, 
 	auth: {
-		username: String, 
-		password: String,
-		blocked: String
+		username: {type: String, required: true, minlength: 3, maxlength:20}, 
+		password: {type: String, required: true, minlength: 3, maxlength:20}, //Should be MD5 
+		blocked: {type: Boolean, default: false}
 	},
 		phoneNumber: String, 
 	address: {
-		email: String, 
-		country: String, 
-		city: String, 
-		area: String, 
-		street: String, 
-		building: String,
-		lat: Number,
-		lng: Number
+		email: {lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
+		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		building: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		lat: {type: Number},
+		lng: {type: Number}
 	},
-	phoneNumber: String,
-	points: Number
+	phoneNumber: {required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
+	points: {type: Number}, 
+	creation:{
+		dateCreated: {typ: Date, required:true}, 
+		platform: {type: String, required:true}
+	}
 });
 
 
 var orderSchema = new Schema({
 	items: [
 		{
-			dish: Schema.Types.ObjectId,
-			quantity: Number, 
-			comments: String
+			dish: {type: Schema.Types.ObjectId, required:true},
+			quantity: {type: Number, min: 1}, 
+			comments: {type: String}
 		}
 	],
-	comments: String, 
-	deliverToUserAddress: Boolean, 
+	comments: {type: String}, 
+	deliverToUserAddress: {type: Boolean}, 
 	altAddress : {
-		country: String, 
-		city: String, 
-		area: String, 
-		street: String, 
-		building: String,
-		lat: Number,
-		lng: Number
+		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: false, lowercase: true },
+		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: false, lowercase: true },
+		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: false, lowercase: true },
+		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: false, lowercase: true },
+		building: {type: String, minlength: 3, trim: true, maxlength: 20, required: false, lowercase: true },
+		lat: {type: Number},
+		lng: {type: Number}
 	},
-	acceptedByChef: Boolean,
-	reproposedTimeByChef: Boolean,
-	rejectedByChef: Boolean, 
-	timeOfOrder: Date, 
-	timeOfDevlivery: Date, 
-	reschedualeTime: Date
+	acceptedByChef: {type: Boolean},
+	reproposedTimeByChef: {type: Boolean},
+	rejectedByChef: {type:Boolean}, 
+	timeOfOrder: {type: Date, required: true}, 
+	timeOfDevlivery: {type: Date, required: true}, 
+	reschedualeTime: {type: Date},
+	creation:{
+		dateCreated: {typ: Date, required:true}, 
+		platform: {type: String, required:true}
+	}
 });
 
 
