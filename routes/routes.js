@@ -1,32 +1,58 @@
 var express = require('express');
-var router = express.Router();
-var Models = require("../models/models.js");
+var AdminModels = require("../models/models.js");
+var AppModels = require("../models/models.js");
 
-var Chef = Models.Chef;
-Chef.methods(['get','put','post', 'delete']);
-Chef.register(router, "/chef");
 
-var Order = Models.Order;
-Order.methods(['get','put','post', 'delete']);
-Order.register(router, "/order");
+//Admin Routes 
+var adminRouter = express.Router();
 
-var Dish = Models.Dish;
-Dish.methods(['get','put','post', 'delete']);
-Dish.register(router, "/dish");
+var AdminChef = AdminModels.Chef;
+AdminChef.methods(['get','put','post', 'delete']);
+AdminChef.register(adminRouter, "/chef");
 
-var User = Models.User;
-User.methods(['get','put','post', 'delete']);
-User.register(router, "/dish");
+var AdminOrder = AdminModels.Order;
+AdminOrder.methods(['get','put','post', 'delete']);
+AdminOrder.register(adminRouter, "/order");
+
+var AdminDish = AdminModels.Dish;
+AdminDish.methods(['get','put','post', 'delete']);
+AdminDish.register(adminRouter, "/dish");
+
+var AdminUser = AdminModels.User;
+AdminUser.methods(['get','put','post', 'delete']);
+AdminUser.register(adminRouter, "/dish");
+
+
+//User Routes 
+var appRouter = express.Router();
+
+var AppChef = AppModels.Chef;
+AppChef.methods(['get']);
+AppChef.register(appRouter, "/chef");
+
+var AppOrder = AppModels.Order;
+AppOrder.methods(['get','put','post']);
+AppOrder.register(appRouter, "/order");
+
+var AppDish = AppModels.Dish;
+AppDish.methods(['get']);
+AppDish.register(appRouter, "/dish");
+
+var AppUser = AppModels.User;
+AppUser.methods(['get','put','post']);
+AppUser.register(appRouter, "/dish");
 
 
 //TODO: Handle a token to make sure user is logged in when creating an order 
 //TODO: Upload images route for different types of data 
 //TODO: Draw initial flow and handle it 
+//TODO: Create Admin routes and App routes where app routes only can create orders and read other items 
 
 
 //Test route for uptime
-router.get('/isOnline', function (req, res) {
+adminRouter.get('/isOnline', function (req, res) {
   res.send("Online");
 });
 
-module.exports = router;
+module.exports.Admin = adminRouter;
+module.exports.App = appRouter;

@@ -5,6 +5,8 @@ var express = require('express'),
     restful = require('node-restful'),
     mongoose = restful.mongoose;
 
+var Routers = require("./routes/routes.js");
+
 var app = express();
 app.use(morgan('dev'));
 
@@ -13,7 +15,8 @@ app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost/iChef");
 
-app.use('/api/v1', require("./routes/routes.js"));
+app.use('/admin/v1', Routers.Admin);
+app.use('/api/v1', Routers.App);
 
 
 var server = app.listen(3000, function () {

@@ -8,9 +8,9 @@ var chefSchema = new Schema({
 	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
 	firstNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
 	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
-	photoFileName: {type:String}, 
+	photoFileName: {type: String}, 
 	address: {
-		email: {lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
+		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
 		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
@@ -19,18 +19,18 @@ var chefSchema = new Schema({
 		lat: {type: Number},
 		lng: {type: Number}
 	}, 
-	phoneNumber: {required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
+	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, 
 	rating: {type: Number}, 
 	points: {type: Number}, 
 	descEN: {type: String}, 
 	descAR: {type: String},
 	auth: {
 		username: {type: String, required: true, minlength: 3, maxlength:20}, 
-		password: {type: String, required: true, minlength: 3, maxlength:20}, //Should be MD5 
+		password: {type: String, required: true, minlength: 3, maxlength:20},
 		blocked: {type: Boolean, default: false}
 	},
 	creation:{
-		dateCreated: {typ: Date, required:true}, 
+		dateCreated: {type: Date, required:true}, 
 		platform: {type: String, required:true}
 	}
 });
@@ -53,7 +53,7 @@ var dishSchema = new Schema({
 		}
 	],
 	creation:{
-		dateCreated: {typ: Date, required:true}, 
+		dateCreated: {type: Date, required:true}, 
 		platform: {type: String, required:true}
 	}
 });
@@ -67,11 +67,12 @@ var userSchema = new Schema({
 	auth: {
 		username: {type: String, required: true, minlength: 3, maxlength:20}, 
 		password: {type: String, required: true, minlength: 3, maxlength:20}, //Should be MD5 
-		blocked: {type: Boolean, default: false}
+		blocked: {type: Boolean, default: false},
+		verified: {type: Boolean, default: false}
 	},
-		phoneNumber: String, 
+	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, 
 	address: {
-		email: {lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
+		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
 		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
@@ -80,10 +81,10 @@ var userSchema = new Schema({
 		lat: {type: Number},
 		lng: {type: Number}
 	},
-	phoneNumber: {required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
+	phoneNumber: {type:String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
 	points: {type: Number}, 
 	creation:{
-		dateCreated: {typ: Date, required:true}, 
+		dateCreated: {type: Date, required:true}, 
 		platform: {type: String, required:true}
 	}
 });
@@ -115,7 +116,7 @@ var orderSchema = new Schema({
 	timeOfDevlivery: {type: Date, required: true}, 
 	reschedualeTime: {type: Date},
 	creation:{
-		dateCreated: {typ: Date, required:true}, 
+		dateCreated: {type: Date, required:true}, 
 		platform: {type: String, required:true}
 	}
 });
