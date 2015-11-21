@@ -2,7 +2,7 @@
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
-
+//TODO: Trim usernames and passwords before storage 
 var chefSchema = new Schema({
 	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
 	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
@@ -19,13 +19,13 @@ var chefSchema = new Schema({
 		lat: {type: Number},
 		lng: {type: Number}
 	}, 
-	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, 
+	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/, index: { unique: true }}, 
 	rating: {type: Number}, 
 	points: {type: Number}, 
 	descEN: {type: String}, 
 	descAR: {type: String},
 	auth: {
-		username: {type: String, required: true, minlength: 3, maxlength:20}, 
+		username: {type: String, required: true, minlength: 3, maxlength:20, index: { unique: true }}, 
 		password: {type: String, required: true, minlength: 3, maxlength:20},
 		blocked: {type: Boolean, default: false}
 	},
@@ -65,12 +65,13 @@ var userSchema = new Schema({
 	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
 	photoFileName: {type:String}, 
 	auth: {
-		username: {type: String, required: true, minlength: 3, maxlength:20}, 
+		username: {type: String, required: true, minlength: 3, maxlength:20, index: { unique: true }}, 
 		password: {type: String, required: true, minlength: 3, maxlength:20}, //Should be MD5 
 		blocked: {type: Boolean, default: false},
-		verified: {type: Boolean, default: false}
+		verified: {type: Boolean, default: false},
+		verificationCode: {type: Number, required: true, default: -1}
 	},
-	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, 
+	phoneNumber: {type: String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/, index: { unique: true }}, 
 	address: {
 		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
 		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
@@ -81,7 +82,6 @@ var userSchema = new Schema({
 		lat: {type: Number},
 		lng: {type: Number}
 	},
-	phoneNumber: {type:String, required:true, match: /\+[0-9]{3}\s[0-9]{4,}/}, //+DDD DDDD
 	points: {type: Number}, 
 	creation:{
 		dateCreated: {type: Date, required:true}, 
@@ -91,6 +91,7 @@ var userSchema = new Schema({
 
 
 var orderSchema = new Schema({
+	_userId: {type: Schema.Types.ObjectId, required:true},
 	items: [
 		{
 			dish: {type: Schema.Types.ObjectId, required:true},

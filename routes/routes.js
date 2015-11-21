@@ -1,9 +1,9 @@
 var express = require('express');
 var AdminModels = require("../models/models.js");
 var AppModels = require("../models/models.js");
+var Contoller = require ("../controllers/controllers.js");
 
-
-//Admin Routes 
+//Admin Routes /////////////////////////////////////////////////////////
 var adminRouter = express.Router();
 
 var AdminChef = AdminModels.Chef;
@@ -20,33 +20,43 @@ AdminDish.register(adminRouter, "/dish");
 
 var AdminUser = AdminModels.User;
 AdminUser.methods(['get','put','post', 'delete']);
-AdminUser.register(adminRouter, "/dish");
+AdminUser.register(adminRouter, "/user");
+/////////////////////////////////////////////////////////
 
 
-//User Routes 
+//User Routes /////////////////////////////////////////////////////////
 var appRouter = express.Router();
 
 var AppChef = AppModels.Chef;
 AppChef.methods(['get']);
 AppChef.register(appRouter, "/chef");
 
+//TODO: Handle a token to make sure user is logged in when creating an order 
 var AppOrder = AppModels.Order;
 AppOrder.methods(['get','put','post']);
+AppOrder.before('post', Contoller.isLoggedInUser).before('get', Contoller.isLoggedInUser).before('put', Contoller.isLoggedInUser);
 AppOrder.register(appRouter, "/order");
+
 
 var AppDish = AppModels.Dish;
 AppDish.methods(['get']);
+AppDish.before('get', Contoller.isLoggedInUser);
 AppDish.register(appRouter, "/dish");
 
-var AppUser = AppModels.User;
+var AppUser = AppModels.User;  //TODO: Just allow the user to do operations to his only
 AppUser.methods(['get','put','post']);
-AppUser.register(appRouter, "/dish");
+AppUser.before('post', Contoller.isLoggedInUser).before('get', Contoller.isLoggedInUser).before('put', Contoller.isLoggedInUser);
+AppUser.route('login.post', Contoller.login); // Register login here 
+//TODO: Registration route for users 
+//TODO: Verification route for users
 
 
-//TODO: Handle a token to make sure user is logged in when creating an order 
+AppUser.register(appRouter, "/user");
+/////////////////////////////////////////////////////////
+
+
 //TODO: Upload images route for different types of data 
 //TODO: Draw initial flow and handle it 
-//TODO: Create Admin routes and App routes where app routes only can create orders and read other items 
 
 
 //Test route for uptime
@@ -56,3 +66,4 @@ adminRouter.get('/isOnline', function (req, res) {
 
 module.exports.Admin = adminRouter;
 module.exports.App = appRouter;
+
