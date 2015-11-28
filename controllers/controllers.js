@@ -1,6 +1,7 @@
 function isLoggedInUser(req, res ,next){
 	console.log("TODO: Check Login");
 	//TODO: Store username, token to redis and check the token is there or not 
+	//Request should contain a authKey: parameter to check 
 	//Check if the sent key is in Redis, if so the user gets his ID back 
 	//Else error happens and user is not autherized 
 	next();

@@ -115,6 +115,7 @@ var orderSchema = new Schema({
 	rejectedByChef: {type:Boolean}, 
 	timeOfOrder: {type: Date, required: true}, 
 	timeOfDevlivery: {type: Date, required: true}, 
+	delivered: {type: Boolean, default: false},
 	reschedualeTime: {type: Date},
 	creation:{
 		dateCreated: {type: Date, required:true}, 
