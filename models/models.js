@@ -2,7 +2,9 @@
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
-//TODO: Trim usernames and passwords before storage 
+
+
+//TODO: Default working hours of the chef 
 var chefSchema = new Schema({
 	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
 	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
