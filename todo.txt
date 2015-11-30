@@ -1,0 +1,2 @@
+- Apply min time for dish by type and quantity 
+- Delivery or pickup for order 
