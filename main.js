@@ -15,6 +15,11 @@ app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost/iChef");
 
+
+app.get('/', function(req, res) {
+  res.send('What is the beginning of eternity, the end of time and space, the beginning of every end and the end of every race?');
+});
+
 app.use('/admin/v1', Routers.Admin);
 app.use('/api/v1', Routers.App);
 

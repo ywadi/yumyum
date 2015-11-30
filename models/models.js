@@ -45,6 +45,8 @@ var dishSchema = new Schema({
 	_chefID: {type: Schema.Types.ObjectId, required: true},
 	unitEN: {type: String}, 
 	unitAR: {type: String},
+	hoursPerUnit: {type: Number, required:true}, //How long a dish will take 
+	defaultUnit:{ type: Number, required:true}, //The default count for the dish (1Manasaf dish)
 	subcategory: [
 		{
 			nameEN: {type: String},
