@@ -6,10 +6,12 @@ var Schema = mongoose.Schema;
 
 //TODO: Default working hours of the chef 
 var chefSchema = new Schema({
-	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
-	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20},
-	firstNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
-	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20},
+	firstNameAR: {type: String, minlength: 2, trim: true, maxlength: 20, required:true},
+	lastNameAR: {type: String, minlength: 2, trim: true, maxlength: 20, required:true},
+	firstNameEN: {type: String, minlength: 2, trim: true, maxlength: 20, required:true},
+	lastNameEN: {type: String, minlength: 2, trim: true, maxlength: 20, required:true},
+	shopNameAR:{type: String, minlength:2, trim: true, maxlength:20, required:true},
+	shopNameEN:{type: String, minlength:2, trim: true, maxlength:20, required:true},
 	photoFileName: {type: String}, 
 	address: {
 		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
@@ -17,7 +19,7 @@ var chefSchema = new Schema({
 		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
-		building: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		building: {type: String, trim: true, maxlength: 20, required: true, lowercase: true },
 		lat: {type: Number},
 		lng: {type: Number}
 	}, 
@@ -49,6 +51,8 @@ var dishSchema = new Schema({
 	unitAR: {type: String},
 	hoursPerUnit: {type: Number, required:true}, //How long a dish will take 
 	defaultUnit:{ type: Number, required:true}, //The default count for the dish (1Manasaf dish)
+	isDishOfDay: {type: Boolean, required: true, default: false},
+	active: {type: Boolean, required:true, default: true},
 	subcategory: [
 		{
 			nameEN: {type: String},
@@ -127,6 +131,23 @@ var orderSchema = new Schema({
 	}
 });
 
+// COUNTRIES 
+var countrySchema = ({
+	nameEN: {type: String, required: true},
+	nameAR: {type: String, required: true},
+	isoCode: {type: String, required:true , minlength:2, maxlenght:2, index: { unique: true }}
+});
+
+// Cities 
+var citySchema = ({
+	countryCode:{type: Schema.Types.ObjectId, required: true},
+	nameEN: {type: String, required: true},
+	nameAR: {type: String, required: true},
+	cityCode: {type: Number, required:true , index: { unique: true }}
+});
+
+//ADD TAGS for Dishes 
+
 
 
 //Declarations for Model Module
@@ -141,3 +162,9 @@ module.exports.User = User;
 
 var Order = restful.model("Order", orderSchema);
 module.exports.Order = Order;
+
+var Country = restful.model("Country", countrySchema);
+module.exports.Country = Country;
+
+var City = restful.model("City", citySchema);
+module.exports.City = City;

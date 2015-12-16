@@ -1,4 +1,5 @@
 var express = require('express'),
+	cors = require('cors'),
 	bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     morgan = require('morgan'),
@@ -10,10 +11,15 @@ var Routers = require("./routes/routes.js");
 var app = express();
 app.use(morgan('dev'));
 
+//CORS enabled
+app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://localhost/iChef");
+var mongoServer = "192.168.8.104";
+
+mongoose.connect("mongodb://"+mongoServer+"/iChef");
 
 
 app.get('/', function(req, res) {

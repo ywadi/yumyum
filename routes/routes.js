@@ -21,6 +21,16 @@ AdminDish.register(adminRouter, "/dish");
 var AdminUser = AdminModels.User;
 AdminUser.methods(['get','put','post', 'delete']);
 AdminUser.register(adminRouter, "/user");
+
+var AdminCountry = AdminModels.Country; 
+AdminCountry.methods(['get','put','post', 'delete']);
+AdminCountry.register(adminRouter, "/country");
+
+var AdminCity = AdminModels.City; 
+AdminCity.methods(['get','put','post', 'delete']);
+AdminCity.register(adminRouter, "/city");
+
+
 /////////////////////////////////////////////////////////
 
 
@@ -30,6 +40,14 @@ var appRouter = express.Router();
 var AppChef = AppModels.Chef;
 AppChef.methods(['get']);
 AppChef.register(appRouter, "/chef");
+
+var AppCountry = AppModels.Country; 
+AppCountry.methods(['get']);
+AppCountry.register(appRouter, "/country");
+
+var AppCity = AppModels.City; 
+AppCity.methods(['get']);
+AppCity.register(appRouter, "/city");
 
 //TODO: Handle a token to make sure user is logged in when creating an order 
 var AppOrder = AppModels.Order;

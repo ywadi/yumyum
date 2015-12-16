@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="Chef" ng-controller="ChefCTRL">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>iChef Panel || Chef Page</title>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="angular/angular.min.js"></script>
+    <script type="text/javascript" src="angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="angular/angular-resource.min.js"></script>
+    <script type="text/javascript" src="chef.js"></script>
+   <style type="text/css">
+    input.ng-valid {
+      border:2px solid green;
+    }
+   input.ng-invalid.ng-touched {
+      border:2px solid #CD3333;
+    }
+
+    .warningBox
+    {
+      background-color:#CD3333;
+      padding: 3px;
+      color:white;
+    }
+    </style>
+  </head>
+
+
+
+  <body>
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">iChef</a>
+        </div>
+    </nav>
+
+
+    <div class="container">
+      <div class="col-md-12" style="">
+        <h1>Chefs on System</h1>
+        
+        <div id="chefToolbar" class="col-md-12 well well-sm">
+          <button class='btn btn-default glyphicon glyphicon-plus' style="text-align:left" ng-click="showAdd = !showAdd"> Add Chef</button>
+          <form name="newChefForm" ng-show="(showAdd)"><h4>Add User</h4> 
+            <div>
+              <strong>First Name Arabic:</strong> 
+              <input name="firstNameAR" required ng-minlength="2" id="firstNameAR" class="form-control" ng-model="newChef.firstNameAR"/> 
+              <span class="warningBox" ng-show="newChefForm.firstNameAR.$invalid && newChefForm.firstNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div>
+              <strong>Last Name Arabic:</strong> 
+              <input name="lastNameAR" required ng-minlength="2" id="lastNameAR" class="form-control" ng-model="newChef.lastNameAR" /> 
+              <span class="warningBox" ng-show="newChefForm.lastNameAR.$invalid && newChefForm.lastNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div>
+              <strong>First Name English:</strong> 
+              <input name="firstNameEN" required ng-minlength="2" class="form-control" ng-model="newChef.firstNameEN" /> 
+              <span class="warningBox" ng-show="newChefForm.firstNameEN.$invalid && newChefForm.firstNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div>
+              <strong>Last Name English:</strong> 
+              <input name="lastNameEN" required ng-minlength="2" class="form-control" ng-model="newChef.lastNameEN" /> 
+              <span class="warningBox" ng-show="newChefForm.lastNameEN.$invalid && newChefForm.lastNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div>
+              <strong>Shop Name Arabic:</strong> 
+              <input name="shopNameAR" required ng-minlength="2" id="shopNameAR" class="form-control" ng-model="newChef.shopNameAR" /> 
+              <span class="warningBox" ng-show="newChefForm.shopNameAR.$invalid && newChefForm.shopNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div>
+              <strong>Shop Name English:</strong> 
+              <input name="shopNameEN" required ng-minlength="2" class="form-control" ng-model="newChef.shopNameEN" /> 
+              <span class="warningBox" ng-show="newChefForm.shopNameEN.$invalid && newChefForm.shopNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+            </div>
+            <div><strong>Description English:</strong> <input class="form-control" ng-model="newChef.descEN" /> </div>
+            <div><strong>Description Arabic:</strong> <input id="descAR" class="form-control" ng-model="newChef.descAR" /> </div>
+            <div><strong>photoFileName:</strong> TODO </div>
+            <div><strong>Rating:</strong> <input class="form-control" ng-model="newChef.rating" /> </div>
+            <div><strong>Points:</strong> <input class="form-control" ng-model="newChef.points" /> </div>
+            <div>
+              <strong>Email:</strong> 
+              <input name="email" type="email" required class="form-control" ng-model="newChef.address.email" /> 
+              <span class="warningBox" ng-show="newChefForm.email.$invalid && newChefForm.email.$touched"> oops! Thats no email! You should know better.</span>
+            </div>            
+            <div>
+              <strong>Username:</strong> 
+              <input name="username" required ng-minlength="3" class="form-control" ng-model="newChef.auth.username" /> 
+              <span class="warningBox" ng-show="newChefForm.username.$invalid && newChefForm.username.$touched"> oops! Should contain a name with no less than 3 letters</span>
+            </div>
+            <div>
+              <strong>Password:</strong>
+              <input name="password" required ng-minlength="3" type="password" class="form-control" ng-model="newChef.auth.password" />
+              <span class="warningBox" ng-show="newChefForm.password.$invalid && newChefForm.password.$touched"> oops! Should contain a name with no less than 3 letters</span>
+            </div>
+            <div><strong>Blocked:</strong> <input type="checkbox" class="" ng-model="newChef.auth.blocked" ng-value="newChef.auth.blocked" /> </div>
+            <br/>
+            <div><h4>Address</h4>
+              <div style = "padding-left:10px"><strong>Country:</strong>
+                <select name="country" required class="form-control" ng-model="newChef.address.country" >
+                  <option value="jordan">Jordan</option>
+                </select>
+                <span class="warningBox" ng-show="newChefForm.country.$invalid && newChefForm.country.$touched"> oops! Simply just select it!!</span>
+              </div>
+              <div style = "padding-left:10px">
+                <strong>City:</strong> 
+                <input name="city" required ng-minlenght="3" class="form-control" ng-model="newChef.address.city" /> 
+                <span class="warningBox" ng-show="newChefForm.city.$invalid && newChefForm.city.$touched"> oops! City name please, 3 letters minimum...</span>
+              </div>
+              <div style = "padding-left:10px">
+                <strong>Area:</strong> 
+                <input name="area" required ng-minlength="3" class="form-control" ng-model="newChef.address.area" /> 
+                <span class="warningBox" ng-show="newChefForm.area.$invalid && newChefForm.area.$touched"> oops! Area name please, 3 letters minimum...</span>
+              </div>
+              <div style = "padding-left:10px">
+                <strong>Street:</strong> 
+                <input name="street" required ng-minlength="3" class="form-control" ng-model="newChef.address.street" />
+                <span class="warningBox" ng-show="newChefForm.street.$invalid && newChefForm.street.$touched"> oops! Street name please, 3 letters minimum...</span>
+              </div>
+              <div style = "padding-left:10px">
+                <strong>Building:</strong> 
+                <input name="building" required ng-maxlength="20" class="form-control" ng-model="newChef.address.building" />
+                <span class="warningBox" ng-show="newChefForm.building.$invalid && newChefForm.building.$touched"> oops! Building number or name goes here...</span>
+              </div>
+              <div style = "padding-left:10px">
+                <strong>Phone Number:</strong> 
+                <input name="phone" required ng-pattern="/\+[0-9]{3}\s[0-9]{4,}/" class="form-control" ng-model="newChef.phoneNumber" />
+                <span class="warningBox" ng-show="newChefForm.phone.$invalid && newChefForm.phone.$touched"> oops! Phone number structure should be +000 000000</span>
+              </div>
+            </div>
+            <br/>
+            <div class="well well-sm">
+              <button class="glyphicon glyphicon glyphicon-save" ng-disabled="newChefForm.$invalid" style="height:30px" ng-click="saveToDB()"> Save to Database</button>
+                <div class="alert alert-success" style="margin-top:5px" ng-show="showOK">
+                  <strong>Success!</strong> The new Kickass chef is now on the system!
+                </div>
+              <div class="alert alert-danger" style="margin-top:5px" ng-show="showSaveErr">
+                <strong>OUCH!!</strong> Something wrong happened! Is your data Red Free??
+              </div>
+              </div>
+          </form>  
+        </div>
+
+        <div id="chefContainer" class="col-md-12" >
+          <div class="well well-sm" ng-repeat="chef in chefsResult">
+            <h4>
+              <button style="height:30px" class="glyphicon glyphicon-align-left" ng-click="getInfo(chef)" itemId={{chef._id}} ></button>
+              <strong>{{chef.shopNameEN}} - {{chef.shopNameAR}} </strong>
+            </h4>  
+            <div ng-show="(chef.appear)" class="details" > 
+              <div class="well well-sm">
+                <button class="glyphicon glyphicon glyphicon-book" style="height:30px" ng-click="goMenu(chef._id)"> Menu</button>
+                <button class="glyphicon glyphicon-shopping-cart" style="height:30px"> Orders</button>
+              </div>
+              <form name="updateChefForm" ><h4>Add User</h4> 
+                <div>
+                  <strong>First Name Arabic:</strong> 
+                  <input name="firstNameAR" required ng-minlength="2" id="firstNameAR" class="form-control" ng-model="chef.chefInfo.firstNameAR"/> 
+                  <span class="warningBox" ng-show="updateChefForm.firstNameAR.$invalid && updateChefForm.firstNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div>
+                  <strong>Last Name Arabic:</strong> 
+                  <input name="lastNameAR" required ng-minlength="2" id="lastNameAR" class="form-control" ng-model="chef.chefInfo.lastNameAR" /> 
+                  <span class="warningBox" ng-show="updateChefForm.lastNameAR.$invalid && updateChefForm.lastNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div>
+                  <strong>First Name English:</strong> 
+                  <input name="firstNameEN" required ng-minlength="2" class="form-control" ng-model="chef.chefInfo.firstNameEN" /> 
+                  <span class="warningBox" ng-show="updateChefForm.firstNameEN.$invalid && updateChefForm.firstNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div>
+                  <strong>Last Name English:</strong> 
+                  <input name="lastNameEN" required ng-minlength="2" class="form-control" ng-model="chef.chefInfo.lastNameEN" /> 
+                  <span class="warningBox" ng-show="updateChefForm.lastNameEN.$invalid && updateChefForm.lastNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div>
+                  <strong>Shop Name Arabic:</strong> 
+                  <input name="shopNameAR" required ng-minlength="2" id="shopNameAR" class="form-control" ng-model="chef.chefInfo.shopNameAR" /> 
+                  <span class="warningBox" ng-show="updateChefForm.shopNameAR.$invalid && updateChefForm.shopNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div>
+                  <strong>Shop Name English:</strong> 
+                  <input name="shopNameEN" required ng-minlength="2" class="form-control" ng-model="chef.chefInfo.shopNameEN" /> 
+                  <span class="warningBox" ng-show="updateChefForm.shopNameEN.$invalid && updateChefForm.shopNameEN.$touched"> oops! Should contain a name with no less than 2 letters</span>
+                </div>
+                <div><strong>Description English:</strong> <input class="form-control" ng-model="chef.chefInfo.descEN" /> </div>
+                <div><strong>Description Arabic:</strong> <input id="descAR" class="form-control" ng-model="chef.chefInfo.descAR" /> </div>
+                <div><strong>photoFileName:</strong> TODO </div>
+                <div><strong>Rating:</strong> <input class="form-control" ng-model="chef.chefInfo.rating" /> </div>
+                <div><strong>Points:</strong> <input class="form-control" ng-model="chef.chefInfo.points" /> </div>
+                <div>
+                  <strong>Email:</strong> 
+                  <input name="email" type="email" required class="form-control" ng-model="chef.chefInfo.address.email" /> 
+                  <span class="warningBox" ng-show="updateChefForm.email.$invalid && updateChefForm.email.$touched"> oops! Thats no email! You should know better.</span>
+                </div>            
+                <div>
+                  <strong>Username:</strong> 
+                  <input name="username" required ng-minlength="3" class="form-control" ng-model="chef.chefInfo.auth.username" /> 
+                  <span class="warningBox" ng-show="updateChefForm.username.$invalid && updateChefForm.username.$touched"> oops! Should contain a name with no less than 3 letters</span>
+                </div>
+                <div>
+                  <strong>Password:</strong>
+                  <input name="password" required ng-minlength="3" type="password" class="form-control" ng-model="chef.chefInfo.auth.password" />
+                  <span class="warningBox" ng-show="updateChefForm.password.$invalid && updateChefForm.password.$touched"> oops! Should contain a name with no less than 3 letters</span>
+                </div>
+                <div><strong>Blocked:</strong> <input type="checkbox" class="" ng-model="chef.chefInfo.auth.blocked" ng-value="chef.chefInfo.auth.blocked" /> </div>
+                <br/>
+                <div><h4>Address</h4>
+                  <div style = "padding-left:10px"><strong>Country:</strong>
+                    <select name="country" required class="form-control" ng-model="chef.chefInfo.address.country" >
+                      <option value="jordan">Jordan</option>
+                    </select>
+                    <span class="warningBox" ng-show="updateChefForm.country.$invalid && updateChefForm.country.$touched"> oops! Simply just select it!!</span>
+                  </div>
+                  <div style = "padding-left:10px">
+                    <strong>City:</strong> 
+                    <input name="city" required ng-minlenght="3" class="form-control" ng-model="chef.chefInfo.address.city" /> 
+                    <span class="warningBox" ng-show="updateChefForm.city.$invalid && updateChefForm.city.$touched"> oops! City name please, 3 letters minimum...</span>
+                  </div>
+                  <div style = "padding-left:10px">
+                    <strong>Area:</strong> 
+                    <input name="area" required ng-minlength="3" class="form-control" ng-model="chef.chefInfo.address.area" /> 
+                    <span class="warningBox" ng-show="updateChefForm.area.$invalid && updateChefForm.area.$touched"> oops! Area name please, 3 letters minimum...</span>
+                  </div>
+                  <div style = "padding-left:10px">
+                    <strong>Street:</strong> 
+                    <input name="street" required ng-minlength="3" class="form-control" ng-model="chef.chefInfo.address.street" />
+                    <span class="warningBox" ng-show="updateChefForm.street.$invalid && updateChefForm.street.$touched"> oops! Street name please, 3 letters minimum...</span>
+                  </div>
+                  <div style = "padding-left:10px">
+                    <strong>Building:</strong> 
+                    <input name="building" required ng-maxlength="20" class="form-control" ng-model="chef.chefInfo.address.building" />
+                    <span class="warningBox" ng-show="updateChefForm.building.$invalid && updateChefForm.building.$touched"> oops! Building number or name goes here...</span>
+                  </div>
+                  <div style = "padding-left:10px">
+                    <strong>Phone Number:</strong> 
+                    <input name="phone" required ng-pattern="/\+[0-9]{3}\s[0-9]{4,}/" class="form-control" ng-model="chef.chefInfo.phoneNumber" />
+                    <span class="warningBox" ng-show="updateChefForm.phone.$invalid && updateChefForm.phone.$touched"> oops! Phone number structure should be +000 000000</span>
+                  </div>
+                </div>
+                <br/>
+                <div class="well well-sm">
+                    <button class="glyphicon glyphicon glyphicon-save" style="height:30px" ng-disabled="updateChefForm.$invalid" ng-click="updateChanges(chef.chefInfo)"> Save Changes</button>
+                    <button class="glyphicon glyphicon glyphicon-trash" style="height:30px" ng-click="deleteRecord(chef.chefInfo)"> Delete </button>
+                    <div class="alert alert-success" style="margin-top:5px" ng-show="updateSuccessMsg">
+                      <strong>Success!</strong> This has been updated!
+                    </div>
+                    <div class="alert alert-danger" style="margin-top:5px" ng-show="showUpdateErr">
+                      <strong>OUCH!!</strong> Something wrong happened! Check console.log...
+                    </div>
+                </div>
+              </form>  
+            </div>
+
+          </div>     
+        </div>
+      </div>
+    </div> 
+
+
+    <!-- YAMLI CODE START -->
+    <script type="text/javascript" src="http://api.yamli.com/js/yamli_api.js"></script>
+    <script type="text/javascript">
+      if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" , startMode: "onOrUserDefault" } ))
+      {
+        Yamli.yamlify( "firstNameAR", { settingsPlacement: "bottomRight" } );
+        Yamli.yamlify( "lastNameAR", { settingsPlacement: "bottomRight" } );
+        Yamli.yamlify( "shopNameAR", { settingsPlacement: "bottomRight" } );
+        Yamli.yamlify( "descAR", { settingsPlacement: "bottomRight" } );
+      }
+    </script>
+    <!-- YAMLI CODE END -->
+
+
+  </body>
+</html>

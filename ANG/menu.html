@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Menu" ng-controller="MenuCTRL">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>iChef Panel || Menu Page</title>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="angular/angular.min.js"></script>
+    <script type="text/javascript" src="angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="angular/angular-resource.min.js"></script>
+    <script type="text/javascript" src="menu.js"></script>
+    <style type="text/css">
+        input.ng-valid {
+          border:2px solid green;
+        }
+       input.ng-invalid.ng-touched {
+          border:2px solid #CD3333;
+        }
+
+        .warningBox
+        {
+          background-color:#CD3333;
+          padding: 3px;
+          color:white;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">iChef</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="col-md-12">
+            <h3>Menu for  <strong>{{currentChef.shopNameEN}}, {{currentChef.shopNameAR}}</strong></h3>
+            <div class="well well-sm">
+                <button class="glyphicon glyphicon-plus" style="height:30px" ng-click="showAdd = !showAdd">Add Menu Item</button>
+                <form name="newDishForm" class="form" role="form" ng-show="(showAdd)">
+                <hr/>
+                    <div class="form-group">
+                        <label for="nameEN">Dish Name English:</label>
+                        <input required ng-minlength="3" ng-maxlength="50" name="nameEN" id="nameEN" class="form-control" placeholder="Enter the name of the dish in English" ng-model="newDish.nameEN">
+                        <span class="warningBox" ng-show="newDishForm.nameEN.$invalid && newDishForm.nameEN.$touched"> oops! Should not be less that 2 letters or more than 50!!</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descEN">Dish Description English:</label>
+                        <input required name="descEN" id="descEN" class="form-control" placeholder="The dish description in English" ng-model="newDish.descEN">
+                        <span class="warningBox" ng-show="newDishForm.descEN.$invalid && newDishForm.descEN.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nameAR">Dish Name Arabic:</label>
+                        <input required ng-minlength="3" ng-maxlength="50" name="nameAR" id="nameAR" class="form-control" placeholder="Enter the name of the dish in English" ng-model="newDish.nameAR">
+                        <span class="warningBox" ng-show="newDishForm.nameAR.$invalid && newDishForm.nameAR.$touched"> oops! Should not be less that 2 letters or more than 50!!</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descAR">Dish Description Arabic:</label>
+                        <input required name="descAR" id="descAR" class="form-control" placeholder="The dish description in Arabic" ng-model="newDish.descAR">
+                        <span class="warningBox" ng-show="newDishForm.descAR.$invalid && newDishForm.descAR.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div>
+                        <strong>Is Dish of the day:</strong> <input type="checkbox" class="" ng-model="newDish.isDishOfDay" ng-value="newDish.isDishOfDay" /> 
+                    </div>
+
+                    <div>
+                        <strong>Active on Menu:</strong> <input type="checkbox" class="" ng-model="newDish.active" ng-value="newDish.active" /> 
+                    </div>
+                    <br/>
+
+                    <div class="form-group">
+                        <label for="unitEN">Dish Unit English:</label>
+                        <input required name="unitEN" id="unitEN" class="form-control" placeholder="What is the dish unit, example plate. In English" ng-model="newDish.unitEN">
+                        <span class="warningBox" ng-show="newDishForm.unitEN.$invalid && newDishForm.unitEN.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unitAR">Dish Unit Arabic:</label>
+                        <input required name="unitAR" id="unitAR" class="form-control" placeholder="What is the dish unit, example plate. In Arabic" ng-model="newDish.unitAR">
+                        <span class="warningBox" ng-show="newDishForm.unitAR.$invalid && newDishForm.unitAR.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hoursPerUnit">Hours per unit:</label>
+                        <input required type="number" name="hoursPerUnit" id="hoursPerUnit" class="form-control" placeholder="How long in hours does a unit require to finish, half an hour is 0.5" ng-model="newDish.hoursPerUnit">
+                        <span class="warningBox" ng-show="newDishForm.hoursPerUnit.$invalid && newDishForm.hoursPerUnit.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="defaultUnit">Default unit ammount:</label>
+                        <input required type="number" name="defaultUnit" id="defaultUnit" class="form-control" placeholder="What is the typical amount of the unit" ng-model="newDish.defaultUnit">
+                        <span class="warningBox" ng-show="newDishForm.defaultUnit.$invalid && newDishForm.defaultUnit.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div>
+                      <button class="glyphicon glyphicon-save" ng-disabled="newDishForm.$invalid" style="height:30px" ng-click="saveToDB()"> Save to Database</button>
+                    </div>
+                    <div class="alert alert-success" style="margin-top:5px" ng-show="showOK">
+                        <strong>Success!</strong> The new Kickass menu item is now on the system!
+                    </div>
+                    <div class="alert alert-danger" style="margin-top:5px" ng-show="showSaveErr">
+                        <strong>OUCH!!</strong> Something wrong happened! Is your data Red Free??
+                    </div>
+                </form>
+            </div>            
+
+        <div id="itemList">
+            <div class="well well-sm" ng-repeat="dish in dishesResult">
+                 <button style="height:30px" class="glyphicon glyphicon-align-left" ng-click="dish.show = !dish.show" itemId={{dish._id}} ></button>  {{dish.nameEN}}, {{dish.nameAR}}
+                <div>
+                    <form name="updateDishForm" class="form" role="form" ng-show="dish.show">
+                    <hr/>
+                        <div class="form-group">
+                            <label for="nameEN">Dish Name English:</label>
+                            <input required ng-minlength="3" ng-maxlength="50" name="nameEN" id="nameEN" class="form-control" placeholder="Enter the name of the dish in English" ng-model="dish.nameEN">
+                            <span class="warningBox" ng-show="updateDishForm.nameEN.$invalid && updateDishForm.nameEN.$touched"> oops! Should not be less that 2 letters or more than 50!!</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descEN">Dish Description English:</label>
+                            <input required name="descEN" id="descEN" class="form-control" placeholder="The dish description in English" ng-model="dish.descEN">
+                            <span class="warningBox" ng-show="updateDishForm.descEN.$invalid && updateDishForm.descEN.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nameAR">Dish Name Arabic:</label>
+                            <input required ng-minlength="3" ng-maxlength="50" name="nameAR" id="nameAR" class="form-control" placeholder="Enter the name of the dish in English" ng-model="dish.nameAR">
+                            <span class="warningBox" ng-show="updateDishForm.nameAR.$invalid && updateDishForm.nameAR.$touched"> oops! Should not be less that 2 letters or more than 50!!</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descAR">Dish Description Arabic:</label>
+                            <input required name="descAR" id="descAR" class="form-control" placeholder="The dish description in Arabic" ng-model="dish.descAR">
+                            <span class="warningBox" ng-show="updateDishForm.descAR.$invalid && updateDishForm.descAR.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div>
+                            <strong>Is Dish of the day:</strong> <input type="checkbox" class="" ng-model="dish.isDishOfDay" ng-value="dish.isDishOfDay" /> 
+                        </div>
+
+                        <div>
+                            <strong>Active on Menu:</strong> <input type="checkbox" class="" ng-model="dish.active" ng-value="dish.active" /> 
+                        </div>
+                        <br/>                        
+
+                        <div class="form-group">
+                            <label for="unitEN">Dish Unit English:</label>
+                            <input required name="unitEN" id="unitEN" class="form-control" placeholder="What is the dish unit, example plate. In English" ng-model="dish.unitEN">
+                            <span class="warningBox" ng-show="updateDishForm.unitEN.$invalid && updateDishForm.unitEN.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unitAR">Dish Unit Arabic:</label>
+                            <input required name="unitAR" id="unitAR" class="form-control" placeholder="What is the dish unit, example plate. In Arabic" ng-model="dish.unitAR">
+                            <span class="warningBox" ng-show="updateDishForm.unitAR.$invalid && updateDishForm.unitAR.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hoursPerUnit">Hours per unit:</label>
+                            <input required type="number" name="hoursPerUnit" id="hoursPerUnit" class="form-control" placeholder="How long in hours does a unit require to finish, half an hour is 0.5" ng-model="dish.hoursPerUnit">
+                            <span class="warningBox" ng-show="updateDishForm.hoursPerUnit.$invalid && updateDishForm.hoursPerUnit.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="defaultUnit">Default unit ammount:</label>
+                            <input required type="number" name="defaultUnit" id="defaultUnit" class="form-control" placeholder="What is the typical amount of the unit" ng-model="dish.defaultUnit">
+                            <span class="warningBox" ng-show="updateDishForm.defaultUnit.$invalid && updateDishForm.defaultUnit.$touched"> oops! Should not be empty</span>
+                        </div>
+
+                        <div>
+                          <button class="glyphicon glyphicon-save" ng-disabled="updateDishForm.$invalid" style="height:30px" ng-click="updateChanges(dish)"> Update</button>
+                          <button class="glyphicon glyphicon-trash" ng-disabled="updateDishForm.$invalid" style="height:30px" ng-click="deleteRecord(dish)"> Delete</button>
+                        </div>
+                        <div class="alert alert-success" style="margin-top:5px" ng-show="updateSuccessMsg">
+                            <strong>Success!</strong> The new Kickass menu item is now uptodate!
+                        </div>
+                        <div class="alert alert-danger" style="margin-top:5px" ng-show="showUpdateErr">
+                            <strong>OUCH!!</strong> Something wrong happened! Is your data Red Free??
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- YAMLI CODE START -->
+    <script type="text/javascript" src="http://api.yamli.com/js/yamli_api.js"></script>
+    <script type="text/javascript">
+      if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" , startMode: "onOrUserDefault" } ))
+      {
+        Yamli.yamlify( "nameAR", { settingsPlacement: "bottomRight" } );
+        Yamli.yamlify( "descAR", { settingsPlacement: "bottomRight" } );
+        Yamli.yamlify( "unitAR", { settingsPlacement: "bottomRight" } );
+      }
+    </script>
+    <!-- YAMLI CODE END -->
+
+  </body>
+
+</html>
