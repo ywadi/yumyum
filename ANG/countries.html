@@ -42,4 +42,29 @@
     <div class="container">
       <div class="col-md-12" style="">
         <h1>Countries</h1>
+        <hr/>
+            <h4>Add Country</h4>
+            <form role="form">
+                <div class="form-group">
+                    <label for="nameEN">Country Name English</label>
+                    <input type="text" class="form-control" id="nameEN" ng-model="countries.new.nameEN">
+                </div>
+                <div class="form-group">
+                    <label for="nameAR">Country Name Arabic</label>
+                    <input type="text" class="form-control" id="nameAR" ng-model="countries.new.nameAR">
+                </div>
+                <div class="form-group">
+                    <label for="isoCode">ISO2 Code</label>
+                    <input type="text" class="form-control" id="isoCode" ng-model="countries.new.isoCode">
+                </div>
+                <button class="btn btn-default">Save</button>
+            </form>
+
+            <div>
+                
+            </div>
+
+
+       </div>
+    </div>
 </body>

@@ -1,2 +1,6 @@
 - Apply min time for dish by type and quantity 
 - Delivery or pickup for order 
+
+
+------Install 
+- Need to create Countries and Cities
