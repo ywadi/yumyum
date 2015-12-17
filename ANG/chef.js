@@ -4,6 +4,16 @@ angular.module('Chef').controller('ChefCTRL',ChefCTRL);
 
 function ChefCTRL($scope, $resource, $location){
 
+	$scope.getCountries = function(){
+		$scope.countriesRes = $resource("http://localhost:3000/admin/v1/:action",{action:"country", populate:""});
+		$scope.countries = $scope.countriesRes.query();
+	}
+	$scope.getCountries();
+
+	$scope.debug = function(item){
+		console.log(item);
+	}
+
 	$scope.goMenu = function(chefId)
 	{
 		var path = window.location.href.substr(0, location.href.lastIndexOf("/") + 1)
@@ -11,12 +21,10 @@ function ChefCTRL($scope, $resource, $location){
 		window.location.href = path+"menu.html?chefId="+chefId;
 	}
 
-	$scope.countries = [{country:"jordan"},{country:"saudi arabia"}];
+	//$scope.countries = [{country:"jordan"},{country:"saudi arabia"}];
 	$scope.getChefs = function(){
 		$scope.chefsList = $resource("http://localhost:3000/admin/v1/:action",{select: 'shopNameEN shopNameAR firstNameEN firstNameAR lastNameEN lastNameAR', sort:'-_id' ,action:"chef"});
 		$scope.chefsResult = $scope.chefsList.query();
-
-	
 	}
 	$scope.getChefs();
 

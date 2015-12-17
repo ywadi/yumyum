@@ -15,8 +15,8 @@ var chefSchema = new Schema({
 	photoFileName: {type: String}, 
 	address: {
 		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
-		country: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
-		city: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		country: {type: Schema.Types.ObjectId, required: true},
+		city: {type: Schema.Types.ObjectId, required: true},
 		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		building: {type: String, trim: true, maxlength: 20, required: true, lowercase: true },
@@ -53,6 +53,7 @@ var dishSchema = new Schema({
 	defaultUnit:{ type: Number, required:true}, //The default count for the dish (1Manasaf dish)
 	isDishOfDay: {type: Boolean, required: true, default: false},
 	active: {type: Boolean, required:true, default: true},
+	costOfUnit: {type: Number, required: true},
 	subcategory: [
 		{
 			nameEN: {type: String},
@@ -135,16 +136,19 @@ var orderSchema = new Schema({
 var countrySchema = ({
 	nameEN: {type: String, required: true},
 	nameAR: {type: String, required: true},
-	isoCode: {type: String, required:true , minlength:2, maxlenght:2, index: { unique: true }}
+	isoCode: {type: String, required:true , minlength:2, maxlenght:2, index: { unique: true }}, 
+	cities:[{
+		nameEN:{type: String, required: true},
+		nameAR: {type: String, required: true},
+		cityId: {type: Number, required: true, index:{unique:true}},
+		area: [{
+			nameEN:{type: String, required: true},
+			nameAR:{type: String, required: true},
+			areaId: {type: Number, required: true, index:{unique:true}}
+		}]
+	}]
 });
 
-// Cities 
-var citySchema = ({
-	countryCode:{type: Schema.Types.ObjectId, required: true},
-	nameEN: {type: String, required: true},
-	nameAR: {type: String, required: true},
-	cityCode: {type: Number, required:true , index: { unique: true }}
-});
 
 //ADD TAGS for Dishes 
 
@@ -165,6 +169,3 @@ module.exports.Order = Order;
 
 var Country = restful.model("Country", countrySchema);
 module.exports.Country = Country;
-
-var City = restful.model("City", citySchema);
-module.exports.City = City;

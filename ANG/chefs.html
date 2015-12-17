@@ -227,15 +227,17 @@
                 <br/>
                 <div><h4>Address</h4>
                   <div style = "padding-left:10px"><strong>Country:</strong>
-                    <select name="country" required class="form-control" ng-model="chef.chefInfo.address.country" >
-                      <option value="jordan">Jordan</option>
+                    <select name="country" required class="form-control" ng-model="chef.chefInfo.address.country" ng-change="debug(chef.chefInfo.address.country);">
+                      <option ng-repeat="c in countries" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
                     </select>
                     <span class="warningBox" ng-show="updateChefForm.country.$invalid && updateChefForm.country.$touched"> oops! Simply just select it!!</span>
                   </div>
                   <div style = "padding-left:10px">
                     <strong>City:</strong> 
-                    <input name="city" required ng-minlenght="3" class="form-control" ng-model="chef.chefInfo.address.city" /> 
-                    <span class="warningBox" ng-show="updateChefForm.city.$invalid && updateChefForm.city.$touched"> oops! City name please, 3 letters minimum...</span>
+                      <select name="city" required class="form-control" ng-model="chef.chefInfo.address.city" ng-init="cities = getCities(chef.chefInfo.address.country)">
+                        <option ng-repeat="c in cities" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                      </select>
+                    <span class="warningBox" ng-show="updateChefForm.city.$invalid && updateChefForm.city.$touched"> oops! City needs selection!...</span>
                   </div>
                   <div style = "padding-left:10px">
                     <strong>Area:</strong> 

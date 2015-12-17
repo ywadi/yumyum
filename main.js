@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
-var mongoServer = "192.168.8.104";
+var mongoServer = "192.168.2.25";
 
 mongoose.connect("mongodb://"+mongoServer+"/iChef");
 
