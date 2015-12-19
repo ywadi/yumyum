@@ -17,7 +17,7 @@ var chefSchema = new Schema({
 		email: {type: String, lowercase:true, match: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i},
 		country: {type: Schema.Types.ObjectId, required: true},
 		city: {type: Schema.Types.ObjectId, required: true},
-		area: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
+		area: {type: Schema.Types.ObjectId, required: true},
 		street: {type: String, minlength: 3, trim: true, maxlength: 20, required: true, lowercase: true },
 		building: {type: String, trim: true, maxlength: 20, required: true, lowercase: true },
 		lat: {type: Number},
@@ -54,13 +54,7 @@ var dishSchema = new Schema({
 	isDishOfDay: {type: Boolean, required: true, default: false},
 	active: {type: Boolean, required:true, default: true},
 	costOfUnit: {type: Number, required: true},
-	subcategory: [
-		{
-			nameEN: {type: String},
-			nameAR: {type: String},
-			comment: {type: String}
-		}
-	],
+	category: {type: Schema.Types.ObjectId, required:true},
 	creation:{
 		dateCreated: {type: Date, required:true}, 
 		platform: {type: String, required:true}
@@ -132,27 +126,30 @@ var orderSchema = new Schema({
 	}
 });
 
-// COUNTRIES 
+// COUNTRIES/Cities and Locations 
 var countrySchema = ({
 	nameEN: {type: String, required: true},
 	nameAR: {type: String, required: true},
-	isoCode: {type: String, required:true , minlength:2, maxlenght:2, index: { unique: true }}, 
-	cities:[{
-		nameEN:{type: String, required: true},
-		nameAR: {type: String, required: true},
-		cityId: {type: Number, required: true, index:{unique:true}},
-		area: [{
-			nameEN:{type: String, required: true},
-			nameAR:{type: String, required: true},
-			areaId: {type: Number, required: true, index:{unique:true}}
-		}]
-	}]
+	isoCode: {type: String, required:true , minlength:2, maxlenght:2, index: { unique: true }}
 });
 
+var citySchema = ({
+	countryId : {type: Schema.Types.ObjectId, required:true},
+	nameEN: {type: String, required: true},
+	nameAR: {type: String, required: true},
+});
 
-//ADD TAGS for Dishes 
+var areaSchema = ({
+	cityId : {type: Schema.Types.ObjectId, required:true},
+	nameEN: {type: String, required: true},
+	nameAR: {type: String, required: true},
+});
 
-
+//Food Category
+var categorySchema = ({
+	nameEN: {type: String, required: true},
+	nameAR: {type: String, required: true}
+});
 
 //Declarations for Model Module
 var Chef = restful.model("Chef", chefSchema);
@@ -160,6 +157,9 @@ module.exports.Chef = Chef;
 
 var Dish = restful.model("Dish", dishSchema);
 module.exports.Dish = Dish;
+
+var Category = restful.model("Category", categorySchema);
+module.exports.Category = Category;
 
 var User = restful.model("User", userSchema);
 module.exports.User = User;
@@ -169,3 +169,9 @@ module.exports.Order = Order;
 
 var Country = restful.model("Country", countrySchema);
 module.exports.Country = Country;
+
+var City = restful.model("City", citySchema);
+module.exports.City = City;
+
+var Area = restful.model("Area", areaSchema);
+module.exports.Area = Area;

@@ -80,6 +80,13 @@
                         <span class="warningBox" ng-show="newDishForm.descAR.$invalid && newDishForm.descAR.$touched"> oops! Should not be empty</span>
                     </div>
 
+                    <div style = ""><strong>Category:</strong>
+                        <select name="category" required class="form-control" ng-model="newDish.category" >
+                          <option ng-repeat="c in categories" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                        </select>
+                        <span class="warningBox" ng-show="newChefForm.category.$invalid && newChefForm.category.$touched"> oops! Simply just select it!!</span>
+                    </div>
+
                     <div>
                         <strong>Is Dish of the day:</strong> <input type="checkbox" class="" ng-model="newDish.isDishOfDay" ng-value="newDish.isDishOfDay" /> 
                     </div>
@@ -105,6 +112,12 @@
                         <label for="hoursPerUnit">Hours per unit:</label>
                         <input required type="number" name="hoursPerUnit" id="hoursPerUnit" class="form-control" placeholder="How long in hours does a unit require to finish, half an hour is 0.5" ng-model="newDish.hoursPerUnit">
                         <span class="warningBox" ng-show="newDishForm.hoursPerUnit.$invalid && newDishForm.hoursPerUnit.$touched"> oops! Should not be empty</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unitCost">Unit Cost USD$:</label>
+                        <input required type="number" name="unitCost" id="unitCost" class="form-control" placeholder="What is the cost of {{newDish.unitEN}}" ng-model="newDish.costOfUnit">
+                        <span class="warningBox" ng-show="newDishForm.unitCost.$invalid && newDishForm.unitCost.$touched"> oops! Should not be empty</span>
                     </div>
 
                     <div class="form-group">
@@ -155,6 +168,13 @@
                             <span class="warningBox" ng-show="updateDishForm.descAR.$invalid && updateDishForm.descAR.$touched"> oops! Should not be empty</span>
                         </div>
 
+                        <div style = ""><strong>Category:</strong>
+                            <select name="category" required class="form-control" ng-model="dish.category" >
+                              <option ng-repeat="c in categories" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                            </select>
+                            <span class="warningBox" ng-show="newChefForm.category.$invalid && newChefForm.category.$touched"> oops! Simply just select it!!</span>
+                        </div>
+
                         <div>
                             <strong>Is Dish of the day:</strong> <input type="checkbox" class="" ng-model="dish.isDishOfDay" ng-value="dish.isDishOfDay" /> 
                         </div>
@@ -182,6 +202,12 @@
                             <span class="warningBox" ng-show="updateDishForm.hoursPerUnit.$invalid && updateDishForm.hoursPerUnit.$touched"> oops! Should not be empty</span>
                         </div>
 
+                        <div class="form-group">
+                            <label for="unitCost">Unit Cost USD$:</label>
+                            <input required type="number" name="unitCost" id="unitCost" class="form-control" placeholder="What is the cost of {{dish.unitEN}}" ng-model="dish.costOfUnit">
+                            <span class="warningBox" ng-show="updateDishForm.unitCost.$invalid && updateDishForm.unitCost.$touched"> oops! Should not be empty</span>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="defaultUnit">Default unit ammount:</label>
                             <input required type="number" name="defaultUnit" id="defaultUnit" class="form-control" placeholder="What is the typical amount of the unit" ng-model="dish.defaultUnit">

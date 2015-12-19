@@ -117,20 +117,24 @@
             <br/>
             <div><h4>Address</h4>
               <div style = "padding-left:10px"><strong>Country:</strong>
-                <select name="country" required class="form-control" ng-model="newChef.address.country" >
-                  <option value="jordan">Jordan</option>
+                <select name="country" required class="form-control" ng-model="newChef.address.country" ng-change="newChef.tmp.countries = getCities(newChef.address.country)" >
+                  <option ng-repeat="c in countries" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
                 </select>
                 <span class="warningBox" ng-show="newChefForm.country.$invalid && newChefForm.country.$touched"> oops! Simply just select it!!</span>
               </div>
-              <div style = "padding-left:10px">
-                <strong>City:</strong> 
-                <input name="city" required ng-minlenght="3" class="form-control" ng-model="newChef.address.city" /> 
-                <span class="warningBox" ng-show="newChefForm.city.$invalid && newChefForm.city.$touched"> oops! City name please, 3 letters minimum...</span>
+
+              <div style = "padding-left:10px"><strong>City:</strong>
+                <select name="city" required class="form-control" ng-model="newChef.address.city" ng-change="newChef.tmp.areas = getAreas(newChef.address.city)" >
+                  <option ng-repeat="c in newChef.tmp.countries" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                </select>
+                <span class="warningBox" ng-show="newChefForm.city.$invalid && newChefForm.city.$touched"> oops! Simply just select it!!</span>
               </div>
-              <div style = "padding-left:10px">
-                <strong>Area:</strong> 
-                <input name="area" required ng-minlength="3" class="form-control" ng-model="newChef.address.area" /> 
-                <span class="warningBox" ng-show="newChefForm.area.$invalid && newChefForm.area.$touched"> oops! Area name please, 3 letters minimum...</span>
+
+              <div style = "padding-left:10px"><strong>Area:</strong>
+                <select name="area" required class="form-control" ng-model="newChef.address.area" >
+                  <option ng-repeat="c in newChef.tmp.areas" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                </select>
+                <span class="warningBox" ng-show="newChefForm.area.$invalid && newChefForm.area.$touched"> oops! Simply just select it!!</span>
               </div>
               <div style = "padding-left:10px">
                 <strong>Street:</strong> 
@@ -169,13 +173,13 @@
             </h4>  
             <div ng-show="(chef.appear)" class="details" > 
               <div class="well well-sm">
-                <button class="glyphicon glyphicon glyphicon-book" style="height:30px" ng-click="goMenu(chef._id)"> Menu</button>
-                <button class="glyphicon glyphicon-shopping-cart" style="height:30px"> Orders</button>
+                <a class="glyphicon glyphicon glyphicon-book" style="height:30px" href="menu.html?chefId={{chef._id}}"> Menu</a> |  
+                <a class="glyphicon glyphicon-shopping-cart" style="height:30px"> Orders</a>
               </div>
               <form name="updateChefForm" ><h4>Add User</h4> 
                 <div>
                   <strong>First Name Arabic:</strong> 
-                  <input name="firstNameAR" required ng-minlength="2" id="firstNameAR" class="form-control" ng-model="chef.chefInfo.firstNameAR"/> 
+                  <input name="firstNameAR" required ng-minlength="2" id="firstNameAR" class="form-control" ng-model="chef.chefInfo.firstNameAR"/>
                   <span class="warningBox" ng-show="updateChefForm.firstNameAR.$invalid && updateChefForm.firstNameAR.$touched"> oops! Should contain a name with no less than 2 letters</span>
                 </div>
                 <div>
@@ -227,22 +231,24 @@
                 <br/>
                 <div><h4>Address</h4>
                   <div style = "padding-left:10px"><strong>Country:</strong>
-                    <select name="country" required class="form-control" ng-model="chef.chefInfo.address.country" ng-change="debug(chef.chefInfo.address.country);">
+                    <select name="country" required class="form-control" ng-model="chef.chefInfo.address.country" ng-change="chef.tmp.cities = getCities(chef.chefInfo.address.country)">
                       <option ng-repeat="c in countries" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
                     </select>
                     <span class="warningBox" ng-show="updateChefForm.country.$invalid && updateChefForm.country.$touched"> oops! Simply just select it!!</span>
                   </div>
                   <div style = "padding-left:10px">
                     <strong>City:</strong> 
-                      <select name="city" required class="form-control" ng-model="chef.chefInfo.address.city" ng-init="cities = getCities(chef.chefInfo.address.country)">
-                        <option ng-repeat="c in cities" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                      <select name="city" required class="form-control" ng-model="chef.chefInfo.address.city" ng-change="chef.tmp.areas = getAreas(chef.chefInfo.address.city)" >
+                        <option ng-repeat="c in chef.tmp.cities" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
                       </select>
                     <span class="warningBox" ng-show="updateChefForm.city.$invalid && updateChefForm.city.$touched"> oops! City needs selection!...</span>
                   </div>
                   <div style = "padding-left:10px">
                     <strong>Area:</strong> 
-                    <input name="area" required ng-minlength="3" class="form-control" ng-model="chef.chefInfo.address.area" /> 
-                    <span class="warningBox" ng-show="updateChefForm.area.$invalid && updateChefForm.area.$touched"> oops! Area name please, 3 letters minimum...</span>
+                      <select name="area" required class="form-control" ng-model="chef.chefInfo.address.area" >
+                        <option ng-repeat="c in chef.tmp.areas" value="{{c._id}}">{{c.nameEN}} | {{c.nameAR}}</option>
+                      </select>
+                    <span class="warningBox" ng-show="updateChefForm.area.$invalid && updateChefForm.area.$touched"> oops! Area needs selection!...</span>
                   </div>
                   <div style = "padding-left:10px">
                     <strong>Street:</strong> 

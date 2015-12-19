@@ -26,6 +26,18 @@ var AdminCountry = AdminModels.Country;
 AdminCountry.methods(['get','put','post', 'delete']);
 AdminCountry.register(adminRouter, "/country");
 
+var AdminCity = AdminModels.City; 
+AdminCity.methods(['get','put','post', 'delete']);
+AdminCity.register(adminRouter, "/city");
+
+var AdminArea = AdminModels.Area; 
+AdminArea.methods(['get','put','post', 'delete']);
+AdminArea.register(adminRouter, "/area");
+
+var AdminCategory = AdminModels.Category; 
+AdminCategory.methods(['get','put','post', 'delete']);
+AdminCategory.register(adminRouter, "/category");
+
 /////////////////////////////////////////////////////////
 
 
@@ -40,6 +52,13 @@ var AppCountry = AppModels.Country;
 AppCountry.methods(['get']);
 AppCountry.register(appRouter, "/country");
 
+var AppCity = AppModels.City; 
+AppCity.methods(['get']);
+AppCity.register(appRouter, "/city");
+
+var AppArea = AppModels.Area; 
+AppArea.methods(['get']);
+AppArea.register(appRouter, "/area");
 
 //TODO: Handle a token to make sure user is logged in when creating an order 
 var AppOrder = AppModels.Order;
@@ -52,6 +71,11 @@ var AppDish = AppModels.Dish;
 AppDish.methods(['get']);
 AppDish.before('get', Contoller.isLoggedInUser);
 AppDish.register(appRouter, "/dish");
+
+var AppCategory = AppModels.Category; 
+AppCategory.methods(['get']);
+AppCategory.register(appRouter, "/category");
+
 
 var AppUser = AppModels.User;  //TODO: Just allow the user to do operations to his only
 AppUser.methods(['get','put','post']);

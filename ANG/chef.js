@@ -5,10 +5,23 @@ angular.module('Chef').controller('ChefCTRL',ChefCTRL);
 function ChefCTRL($scope, $resource, $location){
 
 	$scope.getCountries = function(){
-		$scope.countriesRes = $resource("http://localhost:3000/admin/v1/:action",{action:"country", populate:""});
+		$scope.countriesRes = $resource("http://localhost:3000/admin/v1/:action",{action:"country"});
 		$scope.countries = $scope.countriesRes.query();
 	}
 	$scope.getCountries();
+
+	$scope.getCities = function(countryId, cb){
+		$scope.citiesRes = $resource("http://localhost:3000/admin/v1/:action",{action:"city", countryId:countryId });
+		var res = $scope.citiesRes.query(cb);
+		return res;
+	}
+
+	$scope.getAreas = function(cityId){
+		console.log("A");
+		$scope.areaRes = $resource("http://localhost:3000/admin/v1/:action",{action:"area", cityId:cityId });
+		var res = $scope.areaRes.query();
+		return res;
+	}
 
 	$scope.debug = function(item){
 		console.log(item);
@@ -32,10 +45,15 @@ function ChefCTRL($scope, $resource, $location){
 	$scope.getInfo = function(item){
 		if(!item.appear)
 		{
-			item.chefItem = $resource("http://localhost:3000/admin/v1/:action/:id",{action:"chef", id:item._id});	
-			item.chefInfo = item.chefItem.get();
-			console.log(item.chefInfo);
-			item.appear = true; // Show the DIV
+			item.chefItem = $resource("http://localhost:3000/admin/v1/:action/:id",{action:"chef", id:"@id"});	
+			item.chefInfo = item.chefItem.get({id:item._id}, function(){
+				item.tmp = {};
+				item.tmp.cities = $scope.getCities(item.chefInfo.address.country, function(){
+					//Get Areas 
+					item.tmp.areas = $scope.getAreas(item.chefInfo.address.city);
+				});	
+				item.appear = true;
+			});
 		}
 		else
 		{
@@ -68,6 +86,7 @@ function ChefCTRL($scope, $resource, $location){
 			}, 3000)
 		});
 	}
+	$scope.test="OK";
 
 	//Delete a Chef
 	$scope.deleteRecord = function(item){

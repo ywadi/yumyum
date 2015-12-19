@@ -6,6 +6,12 @@ function MenuCTRL($scope, $resource){
 	//TODO: Chef ID is missing or return is 0 to exit page ! somehow !
 	$scope.chefId = getUrlParameter("chefId");
 
+	$scope.getCategories = function(){
+		$scope.categoryRes = $resource("http://localhost:3000/admin/v1/:action",{action:"category"});	
+		$scope.categories = $scope.categoryRes.query();
+	}
+	$scope.getCategories();
+
 	//Get Chef Information 
 	$scope.chefItem = $resource("http://localhost:3000/admin/v1/:action/:id",{action:"chef", id:$scope.chefId});	
 	$scope.currentChef = $scope.chefItem.get();
