@@ -4,6 +4,17 @@ angular.module('Chef').controller('ChefCTRL',ChefCTRL);
 
 function ChefCTRL($scope, $resource, $location){
 
+	//E is the element, varPath in the current scope do you want to update
+	$scope.uploadImage = function(e, varPath){
+		imger = e;
+		e = e.scope();
+		uploadFile(imger, function(data){
+			console.log(data);
+			assign(e, varPath, data); // USE Assign 
+			e.$apply();
+		})
+	}
+
 	$scope.getCountries = function(){
 		$scope.countriesRes = $resource("http://localhost:3000/admin/v1/:action",{action:"country"});
 		$scope.countries = $scope.countriesRes.query();
@@ -36,7 +47,7 @@ function ChefCTRL($scope, $resource, $location){
 
 	//$scope.countries = [{country:"jordan"},{country:"saudi arabia"}];
 	$scope.getChefs = function(){
-		$scope.chefsList = $resource("http://localhost:3000/admin/v1/:action",{select: 'shopNameEN shopNameAR firstNameEN firstNameAR lastNameEN lastNameAR', sort:'-_id' ,action:"chef"});
+		$scope.chefsList = $resource("http://localhost:3000/admin/v1/:action",{select: 'photoFileName shopNameEN shopNameAR firstNameEN firstNameAR lastNameEN lastNameAR', sort:'-_id' ,action:"chef"});
 		$scope.chefsResult = $scope.chefsList.query();
 	}
 	$scope.getChefs();
@@ -65,6 +76,7 @@ function ChefCTRL($scope, $resource, $location){
 	$scope.showUpdateErr = false;
 	$scope.updateSuccessMsg = false;
 	$scope.updateChanges = function(item){
+		console.log(item)
 		var updater =  $resource("http://localhost:3000/admin/v1/:action/:id",{action:"chef", id:item._id}, {update: { method: 'PUT' }});
 		updater.update(item, function(){
 			$scope.updateSuccessMsg = true;
@@ -140,6 +152,5 @@ function ChefCTRL($scope, $resource, $location){
 			}, 3000)
 		});
 	}
-
 
 }

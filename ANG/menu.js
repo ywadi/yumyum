@@ -6,6 +6,17 @@ function MenuCTRL($scope, $resource){
 	//TODO: Chef ID is missing or return is 0 to exit page ! somehow !
 	$scope.chefId = getUrlParameter("chefId");
 
+	//E is the element, varPath in the current scope do you want to update
+	$scope.uploadImage = function(e, varPath){
+		imger = e;
+		e = e.scope();
+		uploadFile(imger, function(data){
+			console.log(data);
+			assign(e, varPath, data); // USE Assign 
+			e.$apply();
+		})
+	}
+
 	$scope.getCategories = function(){
 		$scope.categoryRes = $resource("http://localhost:3000/admin/v1/:action",{action:"category"});	
 		$scope.categories = $scope.categoryRes.query();

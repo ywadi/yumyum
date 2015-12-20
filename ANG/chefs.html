@@ -19,7 +19,9 @@
     <script type="text/javascript" src="angular/angular.min.js"></script>
     <script type="text/javascript" src="angular/angular-route.min.js"></script>
     <script type="text/javascript" src="angular/angular-resource.min.js"></script>
+    <script type="text/javascript" src="libs.js"></script>
     <script type="text/javascript" src="chef.js"></script>
+    <script type="text/javascript" src="uploadImage.js"></script>
    <style type="text/css">
     input.ng-valid {
       border:2px solid green;
@@ -42,18 +44,28 @@
   <body>
 
     <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">iChef</a>
-        </div>
-    </nav>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><img src="http://www.tablespr.com/wp-content/uploads/2012/11/chef_hat_winner.png" style="height:50px"/></a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li ><a href="chefs.html">Chefs</a></li>
+          <li ><a href="cats.html">Categories</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
 
 
     <div class="container">
@@ -62,7 +74,7 @@
         
         <div id="chefToolbar" class="col-md-12 well well-sm">
           <button class='btn btn-default glyphicon glyphicon-plus' style="text-align:left" ng-click="showAdd = !showAdd"> Add Chef</button>
-          <form name="newChefForm" ng-show="(showAdd)"><h4>Add User</h4> 
+          <div name="newChefForm" ng-show="(showAdd)"><h4>Add User</h4> 
             <div>
               <strong>First Name Arabic:</strong> 
               <input name="firstNameAR" required ng-minlength="2" id="firstNameAR" class="form-control" ng-model="newChef.firstNameAR"/> 
@@ -95,7 +107,13 @@
             </div>
             <div><strong>Description English:</strong> <input class="form-control" ng-model="newChef.descEN" /> </div>
             <div><strong>Description Arabic:</strong> <input id="descAR" class="form-control" ng-model="newChef.descAR" /> </div>
-            <div><strong>photoFileName:</strong> TODO </div>
+            
+            <div class="well well-sm">
+              <strong>Photo:</strong> 
+              <input type="file" ng-model="image" onchange="angular.element(this).scope().uploadImage(angular.element(this),'newChef.photoFileName')" />
+              <img style="height:80px;" ng-src="{{newChef.photoFileName}}"/>
+            </div>
+            
             <div><strong>Rating:</strong> <input class="form-control" ng-model="newChef.rating" /> </div>
             <div><strong>Points:</strong> <input class="form-control" ng-model="newChef.points" /> </div>
             <div>
@@ -162,14 +180,15 @@
                 <strong>OUCH!!</strong> Something wrong happened! Is your data Red Free??
               </div>
               </div>
-          </form>  
+          </div>  
         </div>
 
         <div id="chefContainer" class="col-md-12" >
-          <div class="well well-sm" ng-repeat="chef in chefsResult">
+          <div class="well well-sm" ng-repeat="chef in chefsResult" style='overflow:auto'>
             <h4>
               <button style="height:30px" class="glyphicon glyphicon-align-left" ng-click="getInfo(chef)" itemId={{chef._id}} ></button>
               <strong>{{chef.shopNameEN}} - {{chef.shopNameAR}} </strong>
+              <img src="{{chef.photoFileName}}" style="float: right; width:100px"/>
             </h4>  
             <div ng-show="(chef.appear)" class="details" > 
               <div class="well well-sm">
@@ -209,7 +228,13 @@
                 </div>
                 <div><strong>Description English:</strong> <input class="form-control" ng-model="chef.chefInfo.descEN" /> </div>
                 <div><strong>Description Arabic:</strong> <input id="descAR" class="form-control" ng-model="chef.chefInfo.descAR" /> </div>
-                <div><strong>photoFileName:</strong> TODO </div>
+
+                <div class="well well-sm">
+                  <strong>Photo:</strong> 
+                  <input type="file" ng-model="image" onchange="angular.element(this).scope().uploadImage(angular.element(this),'chef.chefInfo.photoFileName')" />
+                  <img style="height:80px;" ng-src="{{chef.chefInfo.photoFileName}}"/>
+                </div>
+
                 <div><strong>Rating:</strong> <input class="form-control" ng-model="chef.chefInfo.rating" /> </div>
                 <div><strong>Points:</strong> <input class="form-control" ng-model="chef.chefInfo.points" /> </div>
                 <div>

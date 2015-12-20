@@ -1,6 +1,7 @@
-- Apply min time for dish by type and quantity 
 - Delivery or pickup for order 
-
+- Image Upload needs to -- clean new image when done 
+  Remove image (both update and new )
+  Image for Dish !
 
 ------Install 
 - Need to create Countries and Cities
